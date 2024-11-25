@@ -1,6 +1,9 @@
+#toolchain path for glibc 2.27
+TOOLCHAIN_PATH= ./toolchains/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin
+
 # CC - specifies the compiler
 #CC = gcc
-CC ?= arm-linux-gnueabihf-gcc
+CC = ${TOOLCHAIN_PATH}/arm-linux-gnueabihf-gcc
 # Compiler flags
 ## -Wall - enables all compiler's wanrnings
 ## -Wextra - enables extra warnings

@@ -1,6 +1,9 @@
+TOOLCHAIN_PATH= ../../toolchains/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin
+
+
 # Compiler and flags
 #CC := gcc
-CC ?= arm-linux-gnueabihf-gcc
+CC = ${TOOLCHAIN_PATH}/arm-linux-gnueabihf-gcc
 CFLAGS := -Wall -Wextra -I. -I../temperature
 
 SRC_DIR = .
