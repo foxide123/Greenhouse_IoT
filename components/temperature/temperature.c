@@ -48,12 +48,22 @@ int open_bus()
 
 void initiate_communication(int file)
 {
-    //addr - 0x27
-    int addr = 0b00011011;
+
+    int addr = 0x27;
     if (ioctl(file, I2C_SLAVE, addr) < 0) {
         printf("Failed to acquire bus access and/or talk to slave. %s\n", strerror(errno));
         exit(1);
     }
+}
+
+void write_register(int file, uint8_t reg)
+{
+    printf("Writing to register 0x%02X\n", reg);
+    if(write(file, &reg, 1) != 1){
+        printf("Failed to write to the i2c bus: %s\n", strerror(errno));
+        exit(1);
+    }
+    usleep(50000);
 }
 
 //obtain data from I2C peripheral. 
@@ -68,7 +78,7 @@ char* get_temp_readings(int file)
 
     // isolate first 2 bits which are status bits
     // if input[0] = 1011 0110 then 1011 0110 & 1100 0000 -> 1000 0000. After shifting: 00000010
-    uint32_t status = input[0] & 0b11000000 >> 6;
+    uint32_t status = (input[0] & 0b11000000) >> 6;
     // masking lower 6 bits of input[0] ignoring 2bits for status
     // (if input[0] = 1011 0110): 1011 0110 & 0011 1111 = 0011 0110. Shifted to the left by 8: 0011 0110 0000 0000
     // (if input[1] = 0010 1010): 0011 0110 0000 0000 | 0000 0000 0010 1010 -> 0011 0110 0010 1010
@@ -77,8 +87,8 @@ char* get_temp_readings(int file)
     // (if input[3] = 0011 0101): 0011 1000 1100 0000 | 0000 0000 0011 0100 -> 0011 100 1111 0100
     uint32_t temperature = (input[2] << 6) | (input[3] & 0b11111100);
 
-    printf("%.1f,", roundf((humidity / (float) 16382 * 100) * 2.0f) / 2.0f);
-    printf("%.1f\n", roundf(((temperature / (float) 16382) * 165 - 40) * 2.0f) / 2.0f);
+    printf("Humidity: %.1f\n", roundf((humidity / (float) 16382 * 100) * 2.0f) / 2.0f);
+    printf("Temperature: %.1f\n", roundf(((temperature / (float) 16382) * 165 - 40) * 2.0f) / 2.0f);
 
     // Create JSON
     char* json_data = malloc(256);
@@ -91,5 +101,5 @@ void temp_init(void)
 {
     int file = open_bus();
     initiate_communication(file);
-    read_from_sensor(file);
+    get_temp_readings(file);
 }
