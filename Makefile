@@ -15,7 +15,9 @@ BUILD_DIR := build
 TEST_DIR := test
 SRC_DIR := main
 
-COMPONENTS := components/server
+COMPONENTS := components/server \
+				components/temperature \
+				components/light
 #components/server \
 			  components/temperature \
 

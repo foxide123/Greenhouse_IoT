@@ -1,6 +1,8 @@
+#include <stdio.h>
 #include "server.h"
 #include "temperature.h"
-#include <stdio.h>
+#include "light_actuator"
+#include "light_sensor"
 
 
 void systemSetup(void);
@@ -16,6 +18,7 @@ void systemSetup(void)
     printf("%s", greeting);
 
     temp_init();
+    light_init();
     //server_init();
     //task_scheduling_init();
 }
