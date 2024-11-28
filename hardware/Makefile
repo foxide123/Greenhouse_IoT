@@ -8,9 +8,8 @@ CC = ${TOOLCHAIN_PATH}/arm-linux-gnueabihf-gcc
 ## -Wall - enables all compiler's wanrnings
 ## -Wextra - enables extra warnings
 ## -Iinclude - add include/ directory to search for headers
-CFLAGS = -Wall -Wextra -Icomponents/server -Icomponents/temperature
+CFLAGS = -Wall -Wextra -Icomponents/server -Icomponents/temperature -Icomponents/light
 LDFLAGS := -lm
-LIBS = -lmicrohttpd
 
 BUILD_DIR := build
 TEST_DIR := test
@@ -18,7 +17,7 @@ SRC_DIR := main
 
 COMPONENTS := components/server \
 				components/temperature \
-				components/light
+				components/light 
 #components/server \
 			  components/temperature \
 
@@ -61,7 +60,7 @@ $(BUILD_DIR):
 $(TARGET): $(OBJECTS) $(COMPONENT_LIBS)
 	@echo "Linking in progress..."
 	@echo "Component libraries: $(COMPONENT_LIBS)"
-	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(COMPONENT_LIBS) $(LIBS) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $(OBJECTS) $(COMPONENT_LIBS) $(LDFLAGS)
 
 #BUILDING TESTS
 test: $(BUILD_DIR)/greenhouse_test

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "light.h"
+#include "light_actuator.h"
 
 // Function to set PWM for controlling light intensity
 void pwm_light(int intensity)
@@ -13,7 +13,7 @@ void pwm_light(int intensity)
     int period = 20000000; // Period in nanoseconds (20ms for 50Hz PWM)
     
     // Configure the pin for PWM
-    int config_result = system("config-pin P9_14 pwm");
+    int config_result = system("config-pin P9_14 pwm > /dev/null 2>&1");
     if (config_result != 0) {
         fprintf(stderr, "Failed to configure P9_14 as PWM\n");
         exit(1);
@@ -48,7 +48,7 @@ void pwm_light(int intensity)
     }
 }
 
-void light_actuator_init(int insensity)
+void light_actuator_init(int intensity)
 {
     pwm_light(intensity);
 }
