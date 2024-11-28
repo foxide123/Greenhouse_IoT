@@ -9,7 +9,6 @@ CFLAGS := -Wall -Wextra -I. -I../temperature
 SRC_DIR = .
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
-LIBS = -lmicrohttpd
 
 BUILD_DIR := build
 OUTPUT_DIR := ../../build/components
@@ -30,7 +29,7 @@ $(OUTPUT_DIR):
 $(TARGET): $(OBJ) | $(OUTPUT_DIR)
 #	@echo "Linking server component in progress..."
 #	$(CC) $(CFLAGS) -o $@ $^
-	ar rcs $@ $^ $(LIBS)
+	ar rcs $@ $^
 
 #Compiling
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
