@@ -13,7 +13,7 @@
 
 int open_bus();
 void initiate_communication();
-char* get_temp_readings();
-void temp_init(void);
+void get_temp_readings(int file, float *temp, float *humidity);
+void temp_init(float *temperature, float *humidity);
 
 #endif

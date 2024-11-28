@@ -67,7 +67,7 @@ void write_register(int file, uint8_t reg)
 }
 
 //obtain data from I2C peripheral. 
-char* get_temp_readings(int file)
+void get_temp_readings(int file, float* temp, float* hum)
 {
     uint8_t input[4] = {0};
     float data;
@@ -87,19 +87,17 @@ char* get_temp_readings(int file)
     // (if input[3] = 0011 0101): 0011 1000 1100 0000 | 0000 0000 0011 0100 -> 0011 100 1111 0100
     uint32_t temperature = (input[2] << 6) | (input[3] & 0b11111100);
 
-   // printf("Humidity: %.1f\n", roundf((humidity / (float) 16382 * 100) * 2.0f) / 2.0f);
-   // printf("Temperature: %.1f\n", roundf(((temperature / (float) 16382) * 165 - 40) * 2.0f) / 2.0f);
+    //printf("Humidity: %.1f\n", roundf((humidity / (float) 16382 * 100) * 2.0f) / 2.0f);
+    //printf("Temperature: %.1f\n", roundf(((temperature / (float) 16382) * 165 - 40) * 2.0f) / 2.0f);
 
-    // Create JSON
-    char* json_data = malloc(256);
-    snprintf(json_data, 256, "{\"temperature\": %.2f, \"humidity\": %.2f}", temperature, humidity);
 
-    return json_data;
+    *temp = roundf(((temperature / (float) 16382) * 165 - 40) * 2.0f) / 2.0f;
+    *hum = roundf((humidity / (float) 16382 * 100) * 2.0f) / 2.0f;
 }
 
-char* temp_init(void)
+void temp_init(float* temperature, float* humidity)
 {
     int file = open_bus();
     initiate_communication(file);
-    return get_temp_readings(file);
+    get_temp_readings(file, temperature, humidity);
 }
