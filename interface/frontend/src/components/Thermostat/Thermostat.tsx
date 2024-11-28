@@ -8,9 +8,9 @@ export default function Thermostat() {
     const [temp, setTemp] = useState();
 
     useEffect(() => {
-      axios.get('http://localhost:8080/temp').then(
+      axios.get('/get_data').then(
         response => {
-          setTemp(response.data);
+          setTemp(response.data.temperature);
         }
       ).catch(error => {
         console.error(error);
